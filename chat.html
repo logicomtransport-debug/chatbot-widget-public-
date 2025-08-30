@@ -9,9 +9,8 @@
   body, html { margin:0; padding:0; font-family:sans-serif; height:100%; background-color:#000; color:#fff; }
   .chat-container { display:flex; flex-direction:column; height:100%; max-width:600px; margin:0 auto; border-left:1px solid gold; border-right:1px solid gold; }
   .chat-header { background-color: gold; color: black; padding:15px; font-size:20px; font-weight:bold; text-align:center; }
-  .user-form { padding:20px; display:flex; 
+  .user-form { padding:20px; display:flex; flex-direction:column; gap:10px; }
 
-flex-direction:column; gap:10px; }
   .user-form input { padding:10px; border-radius:5px; border:none; font-size:16px; }
   .user-form button { padding:10px; border-radius:5px; border:none; background-color: gold; color:black; font-weight:bold; cursor:pointer; }
   .chat-messages { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
@@ -19,9 +18,8 @@ flex-direction:column; gap:10px; }
   .bot-message { background-color:#333; align-self:flex-start; }
   .user-message { background-color:gold; color:black; align-self:flex-end; }
   .chat-input-container { display:flex; padding:10px; border-top:1px solid #555; }
-  .chat-input-container input { flex:1; padding:10px; border-radius:5px; 
+  .chat-input-container input { flex:1; padding:10px; border-radius:5px; border:none; font-size:16px; }
 
-border:none; font-size:16px; }
   .chat-input-container button { margin-left:10px; padding:10px 15px; border-radius:5px; border:none; background-color: gold; color:black; font-weight:bold; cursor:pointer; }
 </style>
 </head>
@@ -34,7 +32,6 @@ border:none; font-size:16px; }
     <input type="email" id="user-email" placeholder="Your Email">
     <button id="start-chat">Start Chat</button>
   </div>
-
 
   <div class="chat-messages" id="chat-messages" style="display:none;"></div>
 
@@ -50,7 +47,6 @@ const startChatBtn = document.getElementById("start-chat");
 const nameInput = document.getElementById("user-name");
 const emailInput = document.getElementById("user-email");
 
-
 const chatMessages = document.getElementById("chat-messages");
 const chatInputContainer = document.getElementById("chat-input-container");
 const chatInput = document.getElementById("chat-input");
@@ -63,8 +59,8 @@ startChatBtn.addEventListener("click", () => {
   userName = nameInput.value.trim();
   userEmail = emailInput.value.trim();
   if(!userName || !userEmail){ alert("Please enter both name and email."); return; }
-
   userForm.style.display = "none";
+
   chatMessages.style.display = "flex";
   chatInputContainer.style.display = "flex";
   addMessage("bot", `Hi ${userName}, welcome to Logicom! You can now chat with our assistant.`);
@@ -80,6 +76,7 @@ function addMessage(sender, text){
 }
 
 function getDemoResponse(msg){
+
   msg = msg.toLowerCase();
   if(msg.includes("price")||msg.includes("cost")) return "Our catalog items range from $45 to $75 per piece.";
   if(msg.includes("granite")) return "Granite Tile A: High-grade black granite tile, 60x60 cm, $45 per piece.";
@@ -92,8 +89,9 @@ function sendMessage(){
   if(!text) return;
   addMessage("user", text);
   chatInput.value = "";
+  setTimeout(()=>addMessage("bot", 
 
-  setTimeout(()=>addMessage("bot", getDemoResponse(text)), 500);
+getDemoResponse(text)), 500);
 }
 
 chatSend.addEventListener("click", sendMessage);
