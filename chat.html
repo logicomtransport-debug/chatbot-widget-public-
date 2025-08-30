@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logicom Chat</title>
+<style>
+  body, html { margin:0; padding:0; font-family:sans-serif; height:100%; background-color:#000; color:#fff; }
+  .chat-container { display:flex; flex-direction:column; height:100%; max-width:600px; margin:0 auto; border-left:1px solid gold; border-right:1px solid gold; }
+  .chat-header { background-color: gold; color: black; padding:15px; font-size:20px; font-weight:bold; text-align:center; }
+  .user-form { padding:20px; display:flex; 
+
+flex-direction:column; gap:10px; }
+  .user-form input { padding:10px; border-radius:5px; border:none; font-size:16px; }
+  .user-form button { padding:10px; border-radius:5px; border:none; background-color: gold; color:black; font-weight:bold; cursor:pointer; }
+  .chat-messages { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+  .message { padding:10px; border-radius:10px; max-width:80%; word-wrap:break-word; }
+  .bot-message { background-color:#333; align-self:flex-start; }
+  .user-message { background-color:gold; color:black; align-self:flex-end; }
+  .chat-input-container { display:flex; padding:10px; border-top:1px solid #555; }
+  .chat-input-container input { flex:1; padding:10px; border-radius:5px; 
+
+border:none; font-size:16px; }
+  .chat-input-container button { margin-left:10px; padding:10px 15px; border-radius:5px; border:none; background-color: gold; color:black; font-weight:bold; cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="chat-container">
+  <div class="chat-header">Logicom Chat</div>
+
+  <div class="user-form" id="user-form">
+    <input type="text" id="user-name" placeholder="Your Name">
+    <input type="email" id="user-email" placeholder="Your Email">
+    <button id="start-chat">Start Chat</button>
+  </div>
+
+
+  <div class="chat-messages" id="chat-messages" style="display:none;"></div>
+
+  <div class="chat-input-container" id="chat-input-container" style="display:none;">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+const userForm = document.getElementById("user-form");
+const startChatBtn = document.getElementById("start-chat");
+const nameInput = document.getElementById("user-name");
+const emailInput = document.getElementById("user-email");
+
+
+const chatMessages = document.getElementById("chat-messages");
+const chatInputContainer = document.getElementById("chat-input-container");
+const chatInput = document.getElementById("chat-input");
+const chatSend = document.getElementById("chat-send");
+
+let userName = "";
+let userEmail = "";
+
+startChatBtn.addEventListener("click", () => {
+  userName = nameInput.value.trim();
+  userEmail = emailInput.value.trim();
+  if(!userName || !userEmail){ alert("Please enter both name and email."); return; }
+
+  userForm.style.display = "none";
+  chatMessages.style.display = "flex";
+  chatInputContainer.style.display = "flex";
+  addMessage("bot", `Hi ${userName}, welcome to Logicom! You can now chat with our assistant.`);
+});
+
+function addMessage(sender, text){
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add("message");
+  msgDiv.classList.add(sender==="bot"?"bot-message":"user-message");
+  msgDiv.textContent = text;
+  chatMessages.appendChild(msgDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function getDemoResponse(msg){
+  msg = msg.toLowerCase();
+  if(msg.includes("price")||msg.includes("cost")) return "Our catalog items range from $45 to $75 per piece.";
+  if(msg.includes("granite")) return "Granite Tile A: High-grade black granite tile, 60x60 cm, $45 per piece.";
+  if(msg.includes("marble")) return "Marble Tile B: White marble tile, 80x80 cm, $60 per piece.";
+  return "Sorry, I am just a demo assistant. I can answer basic questions about our catalog.";
+}
+
+function sendMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
+  addMessage("user", text);
+  chatInput.value = "";
+
+  setTimeout(()=>addMessage("bot", getDemoResponse(text)), 500);
+}
+
+chatSend.addEventListener("click", sendMessage);
+chatInput.addEventListener("keypress", e => { if(e.key==="Enter") sendMessage(); });
+</script>
+</body>
+</html>
