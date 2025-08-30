@@ -261,7 +261,8 @@ const email = document.getElementById("userEmail").value.trim();
     alert("Please enter both name and email.");
     return;
   }
-  // Simple email format check
+
+  // EMAIL VALIDATION
 constemailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if(!emailPattern.test(email)){
     alert("Please enter a valid email address.");
