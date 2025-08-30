@@ -2,100 +2,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logicom Chat</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Catalog Chatbot</title>
 <style>
-  body, html { margin:0; padding:0; font-family:sans-serif; height:100%; background-color:#000; color:#fff; }
-  .chat-container { display:flex; flex-direction:column; height:100%; max-width:600px; margin:0 auto; border-left:1px solid gold; border-right:1px solid gold; }
-  .chat-header { background-color: gold; color: black; padding:15px; font-size:20px; font-weight:bold; text-align:center; }
-  .user-form { padding:20px; display:flex; flex-direction:column; gap:10px; }
+body { font-family: Arial,sans-serif; background:#f5f5f5; display:flex; flex-direction:column; align-items:center; padding:20px;}
+#chat, #signup { width:100%; max-width:500px; background:#fff; border-radius:10px; padding:15px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+.msg { margin:5px 0;}
+.user { color: blue; font-weight:bold;}
+.bot { color: green;}
+#input-box { display:flex; margin-top:10px;}
 
-  .user-form input { padding:10px; border-radius:5px; border:none; font-size:16px; }
-  .user-form button { padding:10px; border-radius:5px; border:none; background-color: gold; color:black; font-weight:bold; cursor:pointer; }
-  .chat-messages { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
-  .message { padding:10px; border-radius:10px; max-width:80%; word-wrap:break-word; }
-  .bot-message { background-color:#333; align-self:flex-start; }
-  .user-message { background-color:gold; color:black; align-self:flex-end; }
-  .chat-input-container { display:flex; padding:10px; border-top:1px solid #555; }
-  .chat-input-container input { flex:1; padding:10px; border-radius:5px; border:none; font-size:16px; }
-
-  .chat-input-container button { margin-left:10px; padding:10px 15px; border-radius:5px; border:none; background-color: gold; color:black; font-weight:bold; cursor:pointer; }
+input, #signup input { flex:1; padding:10px; border:1px solid #ccc; border-radius:5px; margin-bottom:5px;}
+button { margin-left:10px; padding:10px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;}
+#signup button { margin-left:0; width:100%; }
 </style>
 </head>
 <body>
-<div class="chat-container">
-  <div class="chat-header">Logicom Chat</div>
 
-  <div class="user-form" id="user-form">
-    <input type="text" id="user-name" placeholder="Your Name">
-    <input type="email" id="user-email" placeholder="Your Email">
-    <button id="start-chat">Start Chat</button>
-  </div>
+<h2>AI Catalog Chatbot</h2>
 
-  <div class="chat-messages" id="chat-messages" style="display:none;"></div>
+<!-- SIGNUP FORM -->
+<div id="signup">
+  <p>Please enter your name and email to start chatting:</p>
+  <input id="userName" type="text" placeholder="Your Name"/>
 
-  <div class="chat-input-container" id="chat-input-container" style="display:none;">
-    <input type="text" id="chat-input" placeholder="Type your message...">
-    <button id="chat-send">Send</button>
-  </div>
+  <input id="userEmail" type="email" placeholder="Your Email"/>
+  <button onclick="startChat()">Start Chat</button>
+</div>
+
+<!-- CHAT BOX (hidden until signup complete) -->
+<div id="chat" style="display:none;"></div>
+<div id="input-box" style="display:none;">
+  <input id="userInput" type="text" placeholder="Ask about our catalog..."/>
+  <button onclick="sendMessage()">Send</button>
 </div>
 
 <script>
-const userForm = document.getElementById("user-form");
-const startChatBtn = document.getElementById("start-chat");
-const nameInput = document.getElementById("user-name");
-const emailInput = document.getElementById("user-email");
+const OPENAI_API_KEY = "YOUR_API_KEY_HERE"; // Replace with your OpenAI API key
+const API_URL = "https://api.openai.com/
 
-const chatMessages = document.getElementById("chat-messages");
-const chatInputContainer = document.getElementById("chat-input-container");
-const chatInput = document.getElementById("chat-input");
-const chatSend = document.getElementById("chat-send");
+v1/chat/completions";
 
-let userName = "";
-let userEmail = "";
+// ====== PDF TEXT ======
+const pdfText = `
 
-startChatBtn.addEventListener("click", () => {
-  userName = nameInput.value.trim();
-  userEmail = emailInput.value.trim();
-  if(!userName || !userEmail){ alert("Please enter both name and email."); return; }
-  userForm.style.display = "none";
 
-  chatMessages.style.display = "flex";
-  chatInputContainer.style.display = "flex";
-  addMessage("bot", `Hi ${userName}, welcome to Logicom! You can now chat with our assistant.`);
-});
+LOGICOM STONES
+NATURE QUARRIES
 
-function addMessage(sender, text){
-  const msgDiv = document.createElement("div");
-  msgDiv.classList.add("message");
-  msgDiv.classList.add(sender==="bot"?"bot-message":"user-message");
-  msgDiv.textContent = text;
-  chatMessages.appendChild(msgDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+---
+
+Hello and welcome! We’re excited to guide you through our premium 
+
+natural stone collection.
+Looking for travertine? We have varieties that bring warmth and elegance 
+
+to any project.
+Our marbles include the most sought-after types, with striking veining 
+
+and timeless beauty.
+Granite lovers will find both classic and exotic options, perfect for 
+
+floors, countertops, and façades.
+Each stone comes in carefully selected grades to match the quality and 
+
+durability you need.
+We offer stones suitable for high-end interiors as well as robust 
+
+outdoor applications.
+If you’re planning projects for export, especially in the Dubai region, 
+
+we have options ready to ship.
+From luxurious polished finishes to natural, textured surfaces, there’s 
+
+a style for every vision.
+Our travertine ranges from creamy neutrals to rich earthy tones, ideal 
+
+for sophisticated spaces.
+Granite options include everything from deep blacks to bold reds and 
+
+unique patterns.
+We carry popular marbles that architects and designers request most, 
+
+known for elegance and exclusivity.
+Not sure which type or grade is right for your project? We’re here to 
+
+help you choose.
+Imagine your design enhanced with natural stone that combines strength, 
+
+beauty, and authenticity.
+Every slab is carefully inspected to ensure it meets strict quality 
+
+standards before shipment.
+We take pride in delivering stones that are not only visually stunning 
+
+but long-lasting.
+Our collection is perfect for both residential and commercial projects 
+
+looking for a premium touch.
+Ask us about finishes, sizes, or combinations—we love helping visitors 
+
+explore possibilities.
+Whether your project calls for subtle elegance or bold statements, we 
+
+have the right stone.
+With our expertise, sourcing, and export-ready solutions, your project 
+
+in Dubai or beyond is in safe hands.
+Let’s find the perfect travertine, granite, or marble to make your 
+
+vision come to life beautifully.
+
+
+ 
+ABOUT US
+
+Located in Dubai Industrial City assupplier,Granite,Marble&Travertine of 
+
+Distinction
+Our stones are not mere surfaces—they are statements.
+Each block and slab is drawn from nature’s most enduring reserves, 
+
+refined to reveal strength, symmetry, and timeless grandeur.
+Fromimmaculatewhitestoprofoundblacks,from noble creams to rare 
+
+greens,these stones embody permanence and prestige.
+
+Hardness&Durability–Most angranites(likeNtzBlack,BJDGreen,ZDNWhite)are 
+
+dense,strong,and wear resistant, Suitable for 
+
+flooring,cladding,countertops and outdoor use.
+
+Color and Pattern Range–Popularvarietiesinclude:
+
+ 	NTZ Black Granite(DeepBlack,Superior alternative to Indian 
+
+Black)
+ 	ZDN White Granite(CleanWhite/Grayish,often compared to Chinese 
+
+White Granite)
+ 	BJD Green Granite(Unique Green Shades,Decorative,Mid-Premium 
+
+Segment)
+ 	MSD Red Granite(Rich Red Tones,rare,Niche demand in Middle 
+
+East/Asia)
+
+You can ask our specialists for detailed list of premium Natural Stones 
+
+Coded Samples right from our quarry sites at the time of your inquiry.
+
+ 
+MISSION AND VISION
+
+ 
+Our mission is to provide premium natural marbles and stones for the
+construction industry, ensuring high safety standardsand environmental 
+
+sustainability,striving to become Dubai's finest marble producer.
+ 
+Our vision is to foster client growth by uncovering the precious natural 
+
+treasures hidden in our mines and making them accessible to the global 
+
+construction an architecture sectors,thereby enhancing our nation's 
+
+development.
+ 
+
+We accept our individual and team responsibilities and we meet our
+commitments.
+
+
+COOPERATION
+
+Good mutual cooperation across positions and departments is the basis 
+
+for a pleasant working atmosphere in which employees feel good.
+
+
+LIFE,HEALTH AND ENVIRONMENT
+
+We seek to improve our wellbeing, our working conditions and the 
+
+surroundings in which we live in.
+
+
+PROFESSIONALISM
+
+We strive to fulfill our responsibilities to the highestpossible 
+
+standards throughout.
+ 
+OUR SUCCESS MANTRA
+
+ 
+OUR SERVICES
+
+Our company policy targets on working closely with our client and 
+
+providing optional solutions to their natural stones requirements.We 
+
+closely monitor factory production give prompt and personal service.
+
+
+Dehbid Marble–cream/beige,comparable to Italian Botticino. 
+Persian Silk (SilkEmperador)–gray,elegant,used in luxury projects. 
+KMR Marble – colorful, decorative, suitable for unique flooring.
+CreamMarble–softbeigetones,widely used in Middle East projects.
+Travertine–very high quality,strong demand in Europe&GCC.
+
+ 
+THE PRINCIPLE
+
+The company has since grown to be come a highly experienced and reliable 
+
+supplierand installer of stone product.Mr,Mani(Director) assures clients 
+
+that they will receive the best standard of product& service.
+
+ 
+WHAT DO WE DO
+
+
+We dedicated to providing the most magnificent, royal, and sturdy 
+
+granite and marbles to the interior design and architecture sector with 
+
+our knowledge, access to natural resources,and advanced technology 
+
+expertise.We are always prepared to supply a vast range of 
+
+marbles,whether it is an indigenous variety or a global brand. 
+ 
+
+
+CONTACT US
+
+quotation@logicomstones.com
+
+
+Whatsapp +1-778-826-0351
+
+
+CanadaOffice-Dubai,U.A.EOffice #187,71 2nd Ave W,Vancouver,BC
+
+
+http://www.logicomstones.com
+
+`;
+
+let visitorName = "";
+let visitorEmail = "";
+
+// ====== SIGNUP ======
+function startChat(){
+  const name = document.getElementById("userName").value.trim();
+
+  const email = document.getElementById("userEmail").value.trim();
+  if(!name || !email){ alert("Please enter both name and email."); return; }
+  visitorName = name;
+  visitorEmail = email;
+
+  // Hide signup form, show chat
+  document.getElementById("signup").style.display="none";
+  document.getElementById("chat").style.display="block";
+  document.getElementById("input-box").style.display="flex";
+
+  appendMessage("bot", `Hello ${visitorName}! Ask me anything about our catalog.`);
+
 }
 
-function getDemoResponse(msg){
-
-  msg = msg.toLowerCase();
-  if(msg.includes("price")||msg.includes("cost")) return "Our catalog items range from $45 to $75 per piece.";
-  if(msg.includes("granite")) return "Granite Tile A: High-grade black granite tile, 60x60 cm, $45 per piece.";
-  if(msg.includes("marble")) return "Marble Tile B: White marble tile, 80x80 cm, $60 per piece.";
-  return "Sorry, I am just a demo assistant. I can answer basic questions about our catalog.";
+// ====== PDF SEARCH ======
+function searchPDF(query){
+  const lines = pdfText.split("\n").filter(line => line.trim());
+  const matches = lines.filter(line => line.toLowerCase().includes(query.toLowerCase()));
+  return matches.join("\n") || "Sorry, no matching info found in our catalog.";
 }
 
-function sendMessage(){
-  const text = chatInput.value.trim();
-  if(!text) return;
-  addMessage("user", text);
-  chatInput.value = "";
-  setTimeout(()=>addMessage("bot", 
+// ====== CHAT LOGIC ======
+async function sendMessage(){
+  const inputField = document.getElementById("userInput");
+  const message = inputField.value.trim();
+  if(!message) return;
 
-getDemoResponse(text)), 500);
+  appendMessage("user", message);
+
+  inputField.value = "";
+
+  appendMessage("bot", "Thinking...");
+
+  try{
+    const context = searchPDF(message);
+
+    const response = await fetch(API_URL, {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model:"gpt-4o-mini",
+        messages:[
+          {role:"system", content:"You are an assistant that answers questions based ONLY on the catalog provided."},
+          {role:"user", content:`Visitor Name: $
+
+{visitorName}\nVisitor Email: ${visitorEmail}\nCatalog context:\n${context}\n\nQuestion: ${message}`}
+        ]
+      })
+    });
+
+    const data = await response.json();
+    document.querySelectorAll(".bot").slice(-1)[0].remove();
+    appendMessage("bot", data.choices[0].message.content);
+
+  } catch(err){
+    console.error(err);
+    document.querySelectorAll(".bot").slice(-1)[0].remove();
+    appendMessage("bot","Error: Unable to get response.");
+
+  }
 }
 
-chatSend.addEventListener("click", sendMessage);
-chatInput.addEventListener("keypress", e => { if(e.key==="Enter") sendMessage(); });
+function appendMessage(sender, text){
+  const chat = document.getElementById("chat");
+  const msg = document.createElement("div");
+  msg.className = `msg ${sender}`;
+  msg.innerHTML = `<strong>${sender==="user"?"You":"AI"}:</strong> ${text}`;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
 </script>
+
 </body>
 </html>
