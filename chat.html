@@ -304,8 +304,8 @@ CanadaOffice-Dubai,U.A.EOffice #187,71 2nd Ave W,Vancouver,BC
 
 http://www.logicomstones.com
 `; // Replace with actual catalog text
-    const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-
+    // const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const emailScreen = document.getElementById("email-screen");
     const messages = document.getElementById("messages");
     const inputArea = document.getElementById("input-area");
@@ -362,4 +362,5 @@ http://www.logicomstones.com
   </script>
 </body>
 </html>
+
 
