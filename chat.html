@@ -1,47 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AI Catalog Chatbot</title>
-<style>
-body { font-family: Arial,sans-serif; background:#f5f5f5; display:flex; flex-direction:column; align-items:center; padding:20px;}
-#chat, #signup { width:100%; max-width:500px; background:#fff; border-radius:10px; padding:15px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-.msg { margin:5px 0;}
-.user { color: blue; font-weight:bold;}
-.bot { color: green;}
-#input-box { display:flex; margin-top:10px;}
-input, #signup input { flex:1; padding:10px; border:1px solid #ccc; border-radius:5px; margin-bottom:5px;}
-button { margin-left:10px; padding:10px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;}
-#signup button { margin-left:0; width:100%; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .chat-container {
+      width: 90%;
+      max-width: 500px;
+      background: #222;
+      border: 2px solid gold;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    #messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      max-height: 300px;
+      margin-bottom: 10px;
+      background: #333;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    .input-area {
+      display: flex;
+      gap: 5px;
+    }
+    input, button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    input {
+      flex: 1;
+    }
+    button {
+      background: gold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <div class="chat-container">
+    <div id="messages"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
-<h2>AI Catalog Chatbot</h2>
-
-<!-- SIGNUP FORM -->
-<div id="signup">
-<p>Please enter your name and email to start chatting:</p>
-<input id="userName" type="text" placeholder="Your Name"/>
-<input id="userEmail" type="email" placeholder="Your Email"/>
-<button onclick="startChat()">Start Chat</button>
-</div>
-
-<!-- CHAT BOX (hidden until signup complete) -->
-<div id="chat" style="display:none;"></div>
-<div id="input-box" style="display:none;">
-<input id="userInput" type="text" placeholder="Ask about our catalog..."/>
-<button onclick="sendMessage()">Send</button>
-</div>
-
-<script>
-const OPENAI_API_KEY = "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"; // Replace with your OpenAI API key
-const API_URL = "https://api.openai.com/v1/chat/completions";
-
-// ====== PDF TEXT ======
-constpdfText = `
-
+  <script>
+    const OPENAI_API_KEY = "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"; 
+    const pdfText = "
 
 LOGICOM STONES
 NATURE QUARRIES
@@ -246,97 +270,44 @@ CanadaOffice-Dubai,U.A.EOffice #187,71 2nd Ave W,Vancouver,BC
 
 
 http://www.logicomstones.com
+";
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-`;
+    const messagesDiv = document.getElementById("messages");
+    const userInput = document.getElementById("userInput");
 
-let visitorName = "";
-let visitorEmail = "";
+    function addMessage(sender, text) {
+      const message = document.createElement("div");
+      message.textContent = `${sender}: ${text}`;
+      messagesDiv.appendChild(message);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
-// ====== SIGNUP ======
-function startChat(){
-const name = document.getElementById("userName").value.trim();
-const email = document.getElementById("userEmail").value.trim();
+    async function sendMessage() {
+      const userMessage = userInput.value.trim();
+      if (!userMessage) return;
+      addMessage("You", userMessage);
+      userInput.value = "";
 
-  if(!name || !email){
-    alert("Please enter both name and email.");
-    return;
-  }
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [
+            { role: "system", content: `You are a helpful assistant. Use this PDF content: ${pdfText}` },
+            { role: "user", content: userMessage }
+          ]
+        })
+      });
 
-  // EMAIL VALIDATION
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if(!emailPattern.test(email)){
-    alert("Please enter a valid email address.");
-    return;
-  }
-
-visitorName = name;
-visitorEmail = email;
-
-  // Hide signup form, show chat
-document.getElementById("signup").style.display="none";
-document.getElementById("chat").style.display="block";
-document.getElementById("input-box").style.display="flex";
-
-appendMessage("bot", `Hello ${visitorName}! Ask me anything about our catalog.`);
-}
-
-// ====== PDF SEARCH ======
-function searchPDF(query){
-const lines = pdfText.split("\n").filter(line =>line.trim());
-const matches = lines.filter(line =>line.toLowerCase().includes(query.toLowerCase()));
-  return matches.join("\n") || "Sorry, no matching info found in our catalog.";
-}
-
-// ====== CHAT LOGIC ======
-async function sendMessage(){
-constinputField = document.getElementById("userInput");
-const message = inputField.value.trim();
-  if(!message) return;
-
-appendMessage("user", message);
-inputField.value = "";
-
-appendMessage("bot", "Thinking...");
-
-  try{
-const context = searchPDF(message);
-
-const response = await fetch(API_URL, {
-method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[
-          {role:"system", content:"You are an assistant that answers questions based ONLY on the catalog provided."},
-          {role:"user", content:`Visitor Name: ${visitorName}\nVisitor Email: ${visitorEmail}\nCatalog context:\n${context}\n\nQuestion: ${message}`}
-        ]
-      })
-    });
-
-const data = await response.json();
-document.querySelectorAll(".bot").slice(-1)[0].remove();
-appendMessage("bot", data.choices[0].message.content);
-
-  } catch(err){
-console.error(err);
-document.querySelectorAll(".bot").slice(-1)[0].remove();
-appendMessage("bot","Error: Unable to get response.");
-  }
-}
-
-function appendMessage(sender, text){
-const chat = document.getElementById("chat");
-constmsg = document.createElement("div");
-msg.className = `msg ${sender}`;
-msg.innerHTML = `<strong>${sender==="user"?"You":"AI"}:</strong> ${text}`;
-chat.appendChild(msg);
-chat.scrollTop = chat.scrollHeight;
-}
-</script>
-
+      const data = await response.json();
+      const botReply = data.choices?.[0]?.message?.content || "Sorry, I couldn't get a reply.";
+      addMessage("Bot", botReply);
+    }
+  </script>
 </body>
 </html>
-
