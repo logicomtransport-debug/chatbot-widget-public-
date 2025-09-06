@@ -5,135 +5,131 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stone Class Tree Preview</title>
 <style>
-  body {
-    margin: 0;
-    background-color: #000;
-    font-family: Arial, sans-serif;
-    color: #fff;
-  }
-  .menu-container {
-    width: 250px;
-    padding: 15px;
-  }
-  h2 {
-    color: orange;
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .toggle-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: orange;
-    color: #000;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background 0.3s;
-    font-size: 14px;
-  }
-  .toggle-btn:hover {
-    background-color: #ffb84d;
-  }
-  .toggle-symbol {
-    font-weight: bold;
-    margin-left: 5px;
-  }
-  ul {
-    list-style-type: none;
-    padding-left: 15px;
-    margin: 0;
-    display: none; /* Hidden by default */
-  }
-  li {
-    margin: 5px 0;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  li:hover {
-    color: orange;
-  }
-  .show {
-    display: block;
-  }
+body {
+  margin: 0;
+  background-color: #000;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+.menu-container {
+  width: 350px;
+  padding: 20px;
+}
+h2 {
+  color: orange;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 2px #333;
+}
+
+/* Tree styling */
+ul.tree {
+  padding-left: 0;
+  list-style: none;
+  position: relative;
+}
+ul.tree li {
+  position: relative;
+  padding: 10px 15px;
+  margin-left: 0;
+}
+ul.tree li span {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+li span:hover {
+  background: rgba(255,165,0,0.2);
+}
+
+/* Horizontal branching for child levels */
+ul.tree ul {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-left: 20px;
+  padding-left: 15px;
+  border-left: 2px solid orange;
+}
+
+/* Level color coding */
+li.level1 > span { background: #FFA500; font-weight: bold; color:#000; }
+li.level2 > span { background: #FFB84D; color:#000; }
+li.level3 > span { background: #FFD699; color:#000; }
+
+/* Connecting lines */
+ul.tree ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 2px;
+  height: 100%;
+  background: orange;
+  z-index: -1;
+}
+ul.tree li::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: -15px;
+  width: 15px;
+  height: 2px;
+  background: orange;
+  z-index: -1;
+}
 </style>
 </head>
 <body>
 <div class="menu-container">
   <h2>Stone Class Tree Preview</h2>
-  <button class="toggle-btn" onclick="toggleTree()">
-    Toggle Menu <span class="toggle-symbol" id="toggleSymbol">+</span>
-  </button>
-  <ul id="stoneTree">
-    <li>Granite
+  <ul class="tree">
+    <li class="level1"><span>Granite</span>
       <ul>
-        <li>Formation (Igneous)</li>
-        <li>Mineral Composition</li>
-        <li>Quarrying & Extraction</li>
-        <li>Design Applications
+        <li class="level2"><span>Formation (Igneous)</span></li>
+        <li class="level2"><span>Mineral Composition</span></li>
+        <li class="level2"><span>Quarrying & Extraction</span></li>
+        <li class="level2"><span>Design Applications</span>
           <ul>
-            <li>Polished</li>
-            <li>Leathered/Flamed</li>
-            <li>Exotic Varieties</li>
+            <li class="level3"><span>Polished</span></li>
+            <li class="level3"><span>Leathered/Flamed</span></li>
+            <li class="level3"><span>Exotic Varieties</span></li>
           </ul>
         </li>
       </ul>
     </li>
-    <li>Marble
+    <li class="level1"><span>Marble</span>
       <ul>
-        <li>Formation (Metamorphic)</li>
-        <li>Mineral Composition</li>
-        <li>Quarrying & Extraction</li>
-        <li>Design Applications
+        <li class="level2"><span>Formation (Metamorphic)</span></li>
+        <li class="level2"><span>Mineral Composition</span></li>
+        <li class="level2"><span>Quarrying & Extraction</span></li>
+        <li class="level2"><span>Design Applications</span>
           <ul>
-            <li>Classic Whites</li>
-            <li>Colored Marbles</li>
-            <li>Veined/Bookmatched</li>
+            <li class="level3"><span>Classic Whites</span></li>
+            <li class="level3"><span>Colored Marbles</span></li>
+            <li class="level3"><span>Veined/Bookmatched</span></li>
           </ul>
         </li>
       </ul>
     </li>
-    <li>Travertine
+    <li class="level1"><span>Travertine</span>
       <ul>
-        <li>Formation (Sedimentary)</li>
-        <li>Mineral Composition</li>
-        <li>Quarrying & Extraction</li>
-        <li>Design Applications
+        <li class="level2"><span>Formation (Sedimentary)</span></li>
+        <li class="level2"><span>Mineral Composition</span></li>
+        <li class="level2"><span>Quarrying & Extraction</span></li>
+        <li class="level2"><span>Design Applications</span>
           <ul>
-            <li>Vein-cut</li>
-            <li>Cross-cut</li>
-            <li>Rustic Finishes</li>
+            <li class="level3"><span>Vein-cut</span></li>
+            <li class="level3"><span>Cross-cut</span></li>
+            <li class="level3"><span>Rustic Finishes</span></li>
           </ul>
         </li>
       </ul>
     </li>
   </ul>
 </div>
-
-<script>
-const tree = document.getElementById('stoneTree');
-const symbol = document.getElementById('toggleSymbol');
-
-function toggleTree() {
-  tree.classList.toggle('show');
-  symbol.textContent = tree.classList.contains('show') ? '−' : '+';
-}
-
-// Optional: expand/collapse subtrees individually on click
-document.querySelectorAll('#stoneTree li').forEach(li => {
-  const childUl = li.querySelector('ul');
-  if (childUl) {
-    li.addEventListener('click', e => {
-      e.stopPropagation();
-      childUl.classList.toggle('show');
-    });
-  }
-});
-</script>
 </body>
 </html>
+
