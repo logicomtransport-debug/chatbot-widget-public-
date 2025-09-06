@@ -25,7 +25,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px; /* smaller button font */
   font-weight: bold;
   margin-bottom: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.4);
@@ -33,9 +33,11 @@ body {
 .toggle-btn:hover {
   background-color: #ffb84d;
 }
+/* Big collapse/expand icon on the right */
 .toggle-symbol {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 22px; /* bigger symbol */
+  margin-left: 15px; /* more space to right */
 }
 
 /* Tree styling */
@@ -44,6 +46,7 @@ ul.tree {
   padding-left: 0;
   margin: 0;
   display: block; /* start visible */
+  font-size: 10px; /* smaller font for nodes */
 }
 ul.tree ul {
   padding-left: 15px;
@@ -51,14 +54,14 @@ ul.tree ul {
   border-left: 2px solid orange;
 }
 li {
-  margin: 5px 0; /* tighter spacing */
+  margin: 4px 0; /* tighter spacing */
   position: relative;
   padding-left: 10px;
 }
 li::before {
   content: '';
   position: absolute;
-  top: 10px;
+  top: 7px;
   left: -10px;
   width: 10px;
   height: 2px;
@@ -66,14 +69,14 @@ li::before {
 }
 li span {
   display: inline-block;
-  padding: 3px 6px;
-  border-radius: 4px;
+  padding: 2px 5px;
+  border-radius: 3px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 li span:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.6);
   background: rgba(255,165,0,0.3);
 }
 
@@ -126,7 +129,7 @@ li.level3 > span { background: linear-gradient(to right, #FFD699, #FFE5B4); colo
           <ul>
             <li class="level3"><span>Vein-cut</span></li>
             <li class="level3"><span>Cross-cut</span></li>
-            <li class="level3"><span>Rustic Finishes</span></li>
+<li class="level3"><span>Rustic Finishes</span></li>
           </ul>
         </li>
       </ul>
@@ -148,3 +151,4 @@ function toggleTree() {
 </script>
 </body>
 </html>
+
