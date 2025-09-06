@@ -33,10 +33,24 @@ body {
 .toggle-btn:hover {
   background-color: #ffb84d;
 }
-.toggle-symbol {
+
+/* Circular modern toggle icon */
+.toggle-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  color: orange;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-  font-size: 22px; 
-  margin-left: 15px; 
+  font-size: 18px;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+}
+.toggle-circle:hover {
+  background: #ffe0b3;
 }
 
 /* Tree styling */
@@ -88,7 +102,8 @@ li.level3 > span { background: linear-gradient(to right, #FFD699, #FFE5B4); colo
 <body>
 <div class="menu-container">
   <button class="toggle-btn" onclick="toggleTree()">
-    Stone Class Tree Preview <span class="toggle-symbol" id="toggleSymbol">+</span>
+    Stone Class Tree Preview
+    <div class="toggle-circle" id="toggleCircle">+</div>
   </button>
   <ul class="tree" id="stoneTree">
     <li class="level1"><span>Granite</span>
@@ -125,7 +140,7 @@ li.level3 > span { background: linear-gradient(to right, #FFD699, #FFE5B4); colo
         <li class="level2"><span>Mineral Composition</span></li>
         <li class="level2"><span>Quarrying & Extraction</span></li>
         <li class="level2"><span>Design Applications</span>
-          <ul>
+<ul>
             <li class="level3"><span>Vein-cut</span></li>
             <li class="level3"><span>Cross-cut</span></li>
             <li class="level3"><span>Rustic Finishes</span></li>
@@ -137,14 +152,15 @@ li.level3 > span { background: linear-gradient(to right, #FFD699, #FFE5B4); colo
 </div>
 <script>
 const tree = document.getElementById('stoneTree');
-const symbol = document.getElementById('toggleSymbol');
+const toggleCircle = document.getElementById('toggleCircle');
 function toggleTree() {
-  if (tree.style.display === "none") {
+  const currentDisplay = window.getComputedStyle(tree).display;
+  if (currentDisplay === "none") {
     tree.style.display = "block";
-    symbol.textContent = "−";
+    toggleCircle.textContent = "−";
   } else {
     tree.style.display = "none";
-    symbol.textContent = "+";
+    toggleCircle.textContent = "+";
   }
 }
 </script>
