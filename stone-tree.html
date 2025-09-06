@@ -25,7 +25,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px; /* smaller button font */
+  font-size: 12px; 
   font-weight: bold;
   margin-bottom: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.4);
@@ -33,11 +33,10 @@ body {
 .toggle-btn:hover {
   background-color: #ffb84d;
 }
-/* Big collapse/expand icon on the right */
 .toggle-symbol {
   font-weight: bold;
-  font-size: 22px; /* bigger symbol */
-  margin-left: 15px; /* more space to right */
+  font-size: 22px; 
+  margin-left: 15px; 
 }
 
 /* Tree styling */
@@ -45,8 +44,8 @@ ul.tree {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  display: block; /* start visible */
-  font-size: 10px; /* smaller font for nodes */
+  display: none; /* start collapsed */
+  font-size: 10px; 
 }
 ul.tree ul {
   padding-left: 15px;
@@ -54,7 +53,7 @@ ul.tree ul {
   border-left: 2px solid orange;
 }
 li {
-  margin: 4px 0; /* tighter spacing */
+  margin: 4px 0; 
   position: relative;
   padding-left: 10px;
 }
@@ -89,7 +88,7 @@ li.level3 > span { background: linear-gradient(to right, #FFD699, #FFE5B4); colo
 <body>
 <div class="menu-container">
   <button class="toggle-btn" onclick="toggleTree()">
-    Stone Class Tree Preview <span class="toggle-symbol" id="toggleSymbol">−</span>
+    Stone Class Tree Preview <span class="toggle-symbol" id="toggleSymbol">+</span>
   </button>
   <ul class="tree" id="stoneTree">
     <li class="level1"><span>Granite</span>
@@ -129,7 +128,7 @@ li.level3 > span { background: linear-gradient(to right, #FFD699, #FFE5B4); colo
           <ul>
             <li class="level3"><span>Vein-cut</span></li>
             <li class="level3"><span>Cross-cut</span></li>
-<li class="level3"><span>Rustic Finishes</span></li>
+            <li class="level3"><span>Rustic Finishes</span></li>
           </ul>
         </li>
       </ul>
