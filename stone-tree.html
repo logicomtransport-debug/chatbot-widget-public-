@@ -7,7 +7,7 @@
 <style>
 html, body {
   margin: 0;
-  background: transparent; /* transparent background */
+  background: transparent; /* transparent for iframe */
   font-family: Arial, sans-serif;
   color: #fff;
 }
@@ -25,7 +25,7 @@ html, body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px; 
+  font-size: 12px;
   font-weight: bold;
   margin-bottom: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.4);
@@ -51,14 +51,12 @@ ul.tree {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  max-height: 0;         
+  max-height: 0;
   overflow: hidden;
   font-size: 10px;
   transition: max-height 0.5s ease;
 }
-ul.tree.open {
-  max-height: 1000px;    
-}
+ul.tree.open { max-height: 1000px; }
 ul.tree ul {
   padding-left: 15px;
   margin: 2px 0;
@@ -90,7 +88,6 @@ li span:hover {
   box-shadow: 0 3px 6px rgba(0,0,0,0.6);
   background: rgba(242,202,0,0.3);
 }
-
 li.level1 > span { background: linear-gradient(to right, #F2CA00, #D1A700); color:#000; font-weight: bold; }
 li.level2 > span { background: linear-gradient(to right, #F7D633, #F2CA00); color:#000; }
 li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); color:#000; }
@@ -137,7 +134,7 @@ li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); colo
         <li class="level2"><span>Mineral Composition</span></li>
         <li class="level2"><span>Quarrying & Extraction</span></li>
         <li class="level2"><span>Design Applications</span>
-          <ul>
+<ul>
             <li class="level3"><span>Vein-cut</span></li>
             <li class="level3"><span>Cross-cut</span></li>
             <li class="level3"><span>Rustic Finishes</span></li>
@@ -147,12 +144,12 @@ li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); colo
     </li>
   </ul>
 </div>
-<script defer>
+<script>
 const tree = document.getElementById('stoneTree');
 const toggleCircle = document.getElementById('toggleCircle');
 const toggleButton = document.getElementById('toggleButton');
 
-toggleButton.addEventListener('click', function(){
+toggleButton.addEventListener('click', function() {
   if(tree.classList.contains('open')){
     tree.classList.remove('open');
     toggleCircle.textContent = "+";
