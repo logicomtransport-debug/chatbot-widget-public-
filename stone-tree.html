@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Stone Class Tree Preview</title>
 <style>
 body {
@@ -12,14 +12,14 @@ body {
   color: #fff;
 }
 .menu-container {
-  width: 280px; /* slim width */
+  width: 280px;
   padding: 10px 15px;
 }
 .toggle-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #F2CA00; /* main updated orange */
+  background-color: #F2CA00;
   color: #000;
   padding: 6px 10px;
   border: none;
@@ -30,11 +30,7 @@ body {
   margin-bottom: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.4);
 }
-.toggle-btn:hover {
-  background-color: #FFD500; /* slightly lighter hover */
-}
-
-/* Circular modern toggle icon */
+.toggle-btn:hover { background-color: #FFD500; }
 .toggle-circle {
   width: 26px;
   height: 26px;
@@ -49,25 +45,28 @@ body {
   margin-left: 10px;
   transition: all 0.2s ease;
 }
-.toggle-circle:hover {
-  background: #fff5cc;
-}
+.toggle-circle:hover { background: #fff5cc; }
 
 /* Tree styling */
 ul.tree {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  display: none; /* start collapsed */
-  font-size: 10px; 
+  max-height: 0;         /* collapsed */
+  overflow: hidden;
+  font-size: 10px;
+  transition: max-height 0.5s ease;
+}
+ul.tree.open {
+  max-height: 1000px;    /* large enough to show whole tree */
 }
 ul.tree ul {
   padding-left: 15px;
   margin: 2px 0;
-  border-left: 2px solid #F2CA00; /* adjusted border color */
+  border-left: 2px solid #F2CA00;
 }
 li {
-  margin: 4px 0; 
+  margin: 4px 0;
   position: relative;
   padding-left: 10px;
 }
@@ -78,7 +77,7 @@ li::before {
   left: -10px;
   width: 10px;
   height: 2px;
-  background: #F2CA00; /* connecting line */
+  background: #F2CA00;
 }
 li span {
   display: inline-block;
@@ -150,17 +149,16 @@ li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); colo
     </li>
   </ul>
 </div>
-<script>
+<script defer>
 const tree = document.getElementById('stoneTree');
 const toggleCircle = document.getElementById('toggleCircle');
 function toggleTree() {
-  const currentDisplay = window.getComputedStyle(tree).display;
-  if (currentDisplay === "none") {
-    tree.style.display = "block";
-    toggleCircle.textContent = "−";
-  } else {
-    tree.style.display = "none";
+  if (tree.classList.contains('open')) {
+    tree.classList.remove('open');
     toggleCircle.textContent = "+";
+  } else {
+    tree.classList.add('open');
+    toggleCircle.textContent = "−";
   }
 }
 </script>
