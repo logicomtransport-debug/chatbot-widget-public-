@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Stone Class Tree Preview</title>
 <style>
-body {
+html, body {
   margin: 0;
-  background-color: #000;
+  background: transparent; /* transparent background for iframe */
   font-family: Arial, sans-serif;
   color: #fff;
 }
@@ -47,18 +47,17 @@ body {
 }
 .toggle-circle:hover { background: #fff5cc; }
 
-/* Tree styling */
 ul.tree {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  max-height: 0;         /* collapsed */
+  max-height: 0;         
   overflow: hidden;
   font-size: 10px;
   transition: max-height 0.5s ease;
 }
 ul.tree.open {
-  max-height: 1000px;    /* large enough to show whole tree */
+  max-height: 1000px;    
 }
 ul.tree ul {
   padding-left: 15px;
@@ -92,7 +91,6 @@ li span:hover {
   background: rgba(242,202,0,0.3);
 }
 
-/* Color by level with gradient effect */
 li.level1 > span { background: linear-gradient(to right, #F2CA00, #D1A700); color:#000; font-weight: bold; }
 li.level2 > span { background: linear-gradient(to right, #F7D633, #F2CA00); color:#000; }
 li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); color:#000; }
@@ -138,8 +136,8 @@ li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); colo
         <li class="level2"><span>Formation (Sedimentary)</span></li>
         <li class="level2"><span>Mineral Composition</span></li>
         <li class="level2"><span>Quarrying & Extraction</span></li>
-<li class="level2"><span>Design Applications</span>
-          <ul>
+        <li class="level2"><span>Design Applications</span>
+<ul>
             <li class="level3"><span>Vein-cut</span></li>
             <li class="level3"><span>Cross-cut</span></li>
             <li class="level3"><span>Rustic Finishes</span></li>
@@ -149,9 +147,11 @@ li.level3 > span { background: linear-gradient(to right, #FFF1A8, #F7D633); colo
     </li>
   </ul>
 </div>
+
 <script defer>
 const tree = document.getElementById('stoneTree');
 const toggleCircle = document.getElementById('toggleCircle');
+
 function toggleTree() {
   if (tree.classList.contains('open')) {
     tree.classList.remove('open');
@@ -160,7 +160,16 @@ function toggleTree() {
     tree.classList.add('open');
     toggleCircle.textContent = "−";
   }
+  setTimeout(sendHeight, 600); // adjust height after animation
 }
+
+// auto-height for iframe
+function sendHeight() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({type: 'setHeight', height: height}, '*');
+}
+
+window.addEventListener('load', sendHeight);
 </script>
 </body>
 </html>
